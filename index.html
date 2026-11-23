@@ -111,6 +111,66 @@ button:hover { transform: translateY(-2px); filter: brightness(1.15); }
         </div>
     </div>
 </div>
-<script src="app.js"></script>
+
+<script>
+function getAccounts() {
+    return JSON.parse(localStorage.getItem("rocAccounts")) || [];
+}
+function saveAccounts(accounts) {
+    localStorage.setItem("rocAccounts", JSON.stringify(accounts));
+}
+function showRegister() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+}
+function showLogin() {
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+}
+function togglePassword(id, checkbox) {
+    document.getElementById(id).type = checkbox.checked ? "text" : "password";
+}
+function toggleRegisterPasswords(checkbox) {
+    const type = checkbox.checked ? "text" : "password";
+    document.getElementById("registerPassword").type = type;
+    document.getElementById("confirmPassword").type = type;
+}
+function register(event) {
+    event.preventDefault();
+    const name = document.getElementById("registerName").value.trim();
+    const username = document.getElementById("registerUsername").value.trim();
+    const password = document.getElementById("registerPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if (password.length < 6) return alert("Password must be at least 6 characters.");
+    if (password !== confirm) return alert("Passwords do not match!");
+
+    const accounts = getAccounts();
+    if (accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase())) {
+        return alert("Username already exists. Please choose another.");
+    }
+
+    accounts.push({ name, username, password });
+    saveAccounts(accounts);
+    alert("Account created successfully! You can now log in.");
+    document.getElementById("registerForm").querySelector("form").reset();
+    showLogin();
+    document.getElementById("loginUsername").value = username;
+}
+function login(event) {
+    event.preventDefault();
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const account = getAccounts().find(
+        item => item.username.toLowerCase() === username.toLowerCase() && item.password === password
+    );
+
+    if (!account) return alert("Incorrect username or password!");
+
+    sessionStorage.setItem("rocLoggedIn", account.username);
+    sessionStorage.setItem("rocUserName", account.name);
+    window.location.href = "dashboard.html";
+}
+</script>
 </body>
 </html>
