@@ -3,676 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ROC | Student Management System</title>
+<title>Login | ROC Student Management System</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
 body {
-    min-height: 100vh;
-    background: #080d1c;
-    color: white;
-}
-/* GENERAL */
-button {
-    border: none;
-    padding: 12px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: .3s;
-}
-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
-}
-.primary-btn {
-    background: #0ea5e9;
-    color: white;
-}
-.danger-btn {
-    background: #dc2626;
-    color: white;
-}
-.edit-btn {
-    background: #7c3aed;
-    color: white;
-}
-input {
-    width: 100%;
-    padding: 13px;
-    margin: 8px 0;
-    border: 1px solid #334155;
-    border-radius: 8px;
-    background: #080d1c;
-    color: white;
-    outline: none;
-}
-input:focus {
-    border-color: #38bdf8;
-}
-h2, h3 {
-    color: #38bdf8;
-}
-/* AUTHENTICATION */
-#authPage {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background:
-        radial-gradient(circle at top left, #123d65 0%, transparent 40%),
-        radial-gradient(circle at bottom right, #31215e 0%, transparent 40%),
-        #080d1c;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #123d65 0%, transparent 40%),
+        radial-gradient(circle at bottom right, #31215e 0%, transparent 40%),
+        #080d1c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 .auth-card {
-    width: 100%;
-    max-width: 420px;
-    padding: 35px;
-    background: #111a30;
-    border: 1px solid #2563a5;
-    border-radius: 18px;
-    box-shadow: 0 0 35px #0ea5e933;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    background: #111a30;
+    border: 1px solid #2563a5;
+    border-radius: 18px;
+    box-shadow: 0 0 35px #0ea5e933;
 }
-.logo {
-    text-align: center;
-    margin-bottom: 25px;
+.logo { text-align: center; margin-bottom: 25px; }
+.logo h1 { color: #38bdf8; font-size: 42px; letter-spacing: 7px; }
+.logo p { color: #94a3b8; font-size: 12px; letter-spacing: 3px; margin-top: 8px; }
+h2 { color: #38bdf8; text-align: center; margin-bottom: 20px; }
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #080d1c;
+    color: white;
+    outline: none;
 }
-.logo h1 {
-    color: #38bdf8;
-    font-size: 42px;
-    letter-spacing: 7px;
+input:focus { border-color: #38bdf8; }
+button {
+    width: 100%;
+    border: none;
+    padding: 13px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #0ea5e9;
+    color: white;
+    margin-top: 12px;
+    transition: .3s;
 }
-.logo p {
-    color: #94a3b8;
-    font-size: 12px;
-    letter-spacing: 3px;
-    margin-top: 8px;
-}
-.auth-card h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.auth-card button {
-    width: 100%;
-    margin-top: 12px;
-}
-.auth-switch {
-    text-align: center;
-    margin-top: 20px;
-    color: #94a3b8;
-    font-size: 14px;
-}
-.auth-switch span {
-    color: #38bdf8;
-    cursor: pointer;
-    font-weight: bold;
-}
+button:hover { transform: translateY(-2px); filter: brightness(1.15); }
 .password-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #94a3b8;
-    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 5px;
 }
-.password-toggle input {
-    width: auto;
-    margin: 0;
-}
-/* DASHBOARD */
-#dashboard {
-    display: none;
-}
-header {
-    padding: 22px 5%;
-    background: #101a31;
-    border-bottom: 1px solid #263957;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-header h1 {
-    color: #38bdf8;
-    letter-spacing: 4px;
-}
-header p {
-    color: #94a3b8;
-    font-size: 12px;
-    margin-top: 5px;
-}
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-#welcomeUser {
-    color: #38bdf8;
-}
-main {
-    width: 90%;
-    max-width: 1200px;
-    margin: 35px auto;
-}
-.section-title {
-    margin-bottom: 20px;
-}
-.stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 18px;
-    margin-bottom: 25px;
-}
-.stat-card {
-    padding: 25px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #142443, #111a30);
-    border: 1px solid #263957;
-}
-.stat-card p {
-    color: #94a3b8;
-    margin-bottom: 12px;
-}
-.stat-card h2 {
-    font-size: 30px;
-}
-.card {
-    background: #111a30;
-    border: 1px solid #263957;
-    border-radius: 15px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 8px 25px #00000030;
-}
-.card h2 {
-    margin-bottom: 20px;
-}
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-}
-.form-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-.search-bar {
-    margin-bottom: 18px;
-}
-.table-wrapper {
-    overflow-x: auto;
-}
-table {
-    width: 100%;
-    min-width: 650px;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #263957;
-}
-th {
-    background: #172554;
-    color: #38bdf8;
-}
-tr:hover {
-    background: #1e293b;
-}
-.actions {
-    display: flex;
-    gap: 7px;
-}
-.actions button {
-    padding: 8px 12px;
-}
-.empty-message {
-    text-align: center;
-    color: #94a3b8;
-    padding: 25px;
-}
-footer {
-    text-align: center;
-    padding: 25px;
-    background: #0b1224;
-    border-top: 1px solid #263957;
-    color: #94a3b8;
-    font-size: 12px;
-    letter-spacing: 2px;
-}
-footer strong {
-    color: #38bdf8;
-}
-@media(max-width: 600px) {
-    header {
-        align-items: flex-start;
-    }
-    .header-right {
-        width: 100%;
-        justify-content: space-between;
-    }
-    .auth-card {
-        padding: 25px;
-    }
-    main {
-        width: 94%;
-    }
-}
+.password-toggle input { width: auto; margin: 0; }
+.auth-switch { text-align: center; margin-top: 20px; color: #94a3b8; font-size: 14px; }
+.auth-switch span { color: #38bdf8; cursor: pointer; font-weight: bold; }
 </style>
 </head>
 <body>
-<!-- LOGIN AND CREATE ACCOUNT PAGE -->
-<div id="authPage">
-    <div class="auth-card">
-        <div class="logo">
-            <h1>ROC</h1>
-            <p>STUDENT MANAGEMENT SYSTEM</p>
-        </div>
-        <!-- LOGIN FORM -->
-        <div id="loginForm">
-            <h2>Welcome Back</h2>
-            <form onsubmit="login(event)">
-                <input type="text" id="loginUsername" placeholder="Username" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <label class="password-toggle">
-                    <input type="checkbox" onchange="togglePassword('loginPassword', this)">
-                    Show password
-                </label>
-                <button type="submit" class="primary-btn">
-                    LOGIN
-                </button>
-            </form>
-            <div class="auth-switch">
-                Don't have an account?
-                <span onclick="showRegister()">Create Account</span>
-            </div>
-        </div>
-        <!-- REGISTER FORM -->
-        <div id="registerForm" style="display:none;">
-            <h2>Create Account</h2>
-            <form onsubmit="register(event)">
-                <input type="text" id="registerName" placeholder="Full Name" required>
-                <input type="text" id="registerUsername" placeholder="Create Username" required>
-                <input type="password" id="registerPassword" placeholder="Create Password" minlength="6" required>
-                <input type="password" id="confirmPassword" placeholder="Confirm Password" minlength="6" required>
-                <label class="password-toggle">
-                    <input type="checkbox" onchange="toggleRegisterPasswords(this)">
-                    Show passwords
-                </label>
-                <button type="submit" class="primary-btn">
-                    CREATE ACCOUNT
-                </button>
-            </form>
-            <div class="auth-switch">
-                Already have an account?
-                <span onclick="showLogin()">Login Here</span>
-            </div>
-        </div>
-    </div>
+<div class="auth-card">
+    <div class="logo">
+        <h1>ROC</h1>
+        <p>STUDENT MANAGEMENT SYSTEM</p>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+        <h2>Welcome Back</h2>
+        <form onsubmit="login(event)">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <label class="password-toggle">
+                <input type="checkbox" onchange="togglePassword('loginPassword', this)">
+                Show password
+            </label>
+            <button type="submit">LOGIN</button>
+        </form>
+        <div class="auth-switch">
+            Don't have an account? <span onclick="showRegister()">Create Account</span>
+        </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none;">
+        <h2>Create Account</h2>
+        <form onsubmit="register(event)">
+            <input type="text" id="registerName" placeholder="Full Name" required>
+            <input type="text" id="registerUsername" placeholder="Create Username" required>
+            <input type="password" id="registerPassword" placeholder="Create Password" minlength="6" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" minlength="6" required>
+            <label class="password-toggle">
+                <input type="checkbox" onchange="toggleRegisterPasswords(this)">
+                Show passwords
+            </label>
+            <button type="submit">CREATE ACCOUNT</button>
+        </form>
+        <div class="auth-switch">
+            Already have an account? <span onclick="showLogin()">Login Here</span>
+        </div>
+    </div>
 </div>
-
-<!-- MAIN DASHBOARD -->
-<div id="dashboard">
-    <header>
-        <div>
-            <h1>ROC</h1>
-            <p>STUDENT MANAGEMENT SYSTEM</p>
-        </div>
-        <div class="header-right">
-            <span id="welcomeUser">Welcome!</span>
-            <button class="danger-btn" onclick="logout()">LOGOUT</button>
-        </div>
-    </header>
-    <main>
-        <h2 class="section-title">Dashboard Overview</h2>
-        <!-- STATISTICS -->
-        <div class="stats">
-            <div class="stat-card">
-                <p>Total Students</p>
-                <h2 id="totalStudents">0</h2>
-            </div>
-            <div class="stat-card">
-                <p>Total Courses</p>
-                <h2 id="totalCourses">0</h2>
-            </div>
-            <div class="stat-card">
-                <p>Average Age</p>
-                <h2 id="averageAge">0</h2>
-            </div>
-        </div>
-        <!-- ADD STUDENT -->
-        <section class="card">
-            <h2>Student Information</h2>
-            <form id="studentForm" onsubmit="saveStudent(event)">
-                <div class="form-grid">
-                    <input type="text" id="studentName" placeholder="Student Name" required>
-                    <input type="text" id="studentId" placeholder="Student ID" required>
-                    <input type="number" id="studentAge" placeholder="Age" min="1" max="120" required>
-                    <input type="text" id="studentCourse" placeholder="Course" required>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="primary-btn" id="submitBtn">ADD STUDENT</button>
-                    <button type="button" onclick="resetForm()" style="background:#475569;color:white;">
-                        CLEAR
-                    </button>
-                </div>
-            </form>
-        </section>
-        <!-- STUDENT RECORDS -->
-        <section class="card">
-            <h2>Student Records</h2>
-            <input type="text" id="searchInput" class="search-bar"
-                placeholder="Search by name, ID, age, or course..."
-                oninput="displayStudents()">
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Age</th>
-                            <th>Course</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="studentTable"></tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2026 ROC | STUDENT MANAGEMENT SYSTEM</p>
-        <p>CREATED BY <strong>ROC</strong></p>
-    </footer>
-</div>
-
-<script>
-/* STORAGE */
-function getAccounts() {
-    return JSON.parse(localStorage.getItem("rocAccounts")) || [];
-}
-function getStudents() {
-    return JSON.parse(localStorage.getItem("rocStudents")) || [];
-}
-function saveAccounts(accounts) {
-    localStorage.setItem("rocAccounts", JSON.stringify(accounts));
-}
-function saveStudentsToStorage(students) {
-    localStorage.setItem("rocStudents", JSON.stringify(students));
-}
-
-/* AUTHENTICATION */
-function showRegister() {
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("registerForm").style.display = "block";
-}
-function showLogin() {
-    document.getElementById("registerForm").style.display = "none";
-    document.getElementById("loginForm").style.display = "block";
-}
-function togglePassword(id, checkbox) {
-    document.getElementById(id).type = checkbox.checked ? "text" : "password";
-}
-function toggleRegisterPasswords(checkbox) {
-    const type = checkbox.checked ? "text" : "password";
-    document.getElementById("registerPassword").type = type;
-    document.getElementById("confirmPassword").type = type;
-}
-
-/* CREATE ACCOUNT */
-function register(event) {
-    event.preventDefault();
-    const name = document.getElementById("registerName").value.trim();
-    const username = document.getElementById("registerUsername").value.trim();
-    const password = document.getElementById("registerPassword").value;
-    const confirm = document.getElementById("confirmPassword").value;
-
-    if (password.length < 6) {
-        alert("Password must be at least 6 characters.");
-        return;
-    }
-    if (password !== confirm) {
-        alert("Passwords do not match!");
-        return;
-    }
-
-    const accounts = getAccounts();
-    const exists = accounts.some(account =>
-        account.username.toLowerCase() === username.toLowerCase()
-    );
-
-    if (exists) {
-        alert("Username already exists. Please choose another.");
-        return;
-    }
-
-    accounts.push({
-        name: name,
-        username: username,
-        password: password
-    });
-    saveAccounts(accounts);
-
-    alert("Account created successfully! You can now log in.");
-    document.getElementById("registerForm").querySelector("form").reset();
-    showLogin();
-    document.getElementById("loginUsername").value = username;
-}
-
-/* LOGIN */
-function login(event) {
-    event.preventDefault();
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value;
-    const accounts = getAccounts();
-
-    const account = accounts.find(item =>
-        item.username.toLowerCase() === username.toLowerCase() &&
-        item.password === password
-    );
-
-    if (!account) {
-        alert("Incorrect username or password!");
-        return;
-    }
-
-    sessionStorage.setItem("rocLoggedIn", account.username);
-    sessionStorage.setItem("rocUserName", account.name);
-    openDashboard();
-}
-
-/* OPEN DASHBOARD */
-function openDashboard() {
-    const username = sessionStorage.getItem("rocLoggedIn");
-    if (!username) return;
-
-    document.getElementById("authPage").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    document.getElementById("welcomeUser").textContent =
-        "Welcome, " + sessionStorage.getItem("rocUserName");
-
-    displayStudents();
-    updateStatistics();
-}
-
-/* LOGOUT */
-function logout() {
-    if (confirm("Are you sure you want to logout?")) {
-        sessionStorage.removeItem("rocLoggedIn");
-        sessionStorage.removeItem("rocUserName");
-        document.getElementById("dashboard").style.display = "none";
-        document.getElementById("authPage").style.display = "flex";
-        document.getElementById("loginForm").querySelector("form").reset();
-        resetForm();
-    }
-}
-
-/* STUDENT MANAGEMENT */
-let editIndex = -1;
-
-function saveStudent(event) {
-    event.preventDefault();
-    const students = getStudents();
-    const student = {
-        name: document.getElementById("studentName").value.trim(),
-        id: document.getElementById("studentId").value.trim(),
-        age: document.getElementById("studentAge").value,
-        course: document.getElementById("studentCourse").value.trim()
-    };
-
-    const duplicate = students.some((item, index) =>
-        item.id.toLowerCase() === student.id.toLowerCase() &&
-        index !== editIndex
-    );
-
-    if (duplicate) {
-        alert("Student ID already exists!");
-        return;
-    }
-
-    if (editIndex === -1) {
-        students.push(student);
-        alert("Student added successfully!");
-    } else {
-        students[editIndex] = student;
-        alert("Student updated successfully!");
-    }
-
-    saveStudentsToStorage(students);
-    resetForm();
-    displayStudents();
-    updateStatistics();
-}
-
-function displayStudents() {
-    const students = getStudents();
-    const search = document.getElementById("searchInput").value.toLowerCase();
-    const table = document.getElementById("studentTable");
-    table.innerHTML = "";
-    let found = 0;
-
-    students.forEach((student, index) => {
-        const matches = [
-            student.name,
-            student.id,
-            student.age,
-            student.course
-        ].some(value =>
-            String(value).toLowerCase().includes(search)
-        );
-
-        if (!matches) return;
-        found++;
-
-        const row = document.createElement("tr");
-        [student.name, student.id, student.age, student.course].forEach(value => {
-            const cell = document.createElement("td");
-            cell.textContent = value;
-            row.appendChild(cell);
-        });
-
-        const actionCell = document.createElement("td");
-        const actions = document.createElement("div");
-        actions.className = "actions";
-
-        const editButton = document.createElement("button");
-        editButton.textContent = "Edit";
-        editButton.className = "edit-btn";
-        editButton.onclick = () => editStudent(index);
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "danger-btn";
-        deleteButton.onclick = () => deleteStudent(index);
-
-        actions.append(editButton, deleteButton);
-        actionCell.appendChild(actions);
-        row.appendChild(actionCell);
-        table.appendChild(row);
-    });
-
-    if (found === 0) {
-        const row = document.createElement("tr");
-        const cell = document.createElement("td");
-        cell.colSpan = 5;
-        cell.className = "empty-message";
-        cell.textContent = "No student records found.";
-        row.appendChild(cell);
-        table.appendChild(row);
-    }
-}
-
-/* EDIT STUDENT */
-function editStudent(index) {
-    const student = getStudents()[index];
-    document.getElementById("studentName").value = student.name;
-    document.getElementById("studentId").value = student.id;
-    document.getElementById("studentAge").value = student.age;
-    document.getElementById("studentCourse").value = student.course;
-    editIndex = index;
-    document.getElementById("submitBtn").textContent = "UPDATE STUDENT";
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
-
-/* DELETE STUDENT */
-function deleteStudent(index) {
-    if (!confirm("Are you sure you want to delete this student?")) {
-        return;
-    }
-    const students = getStudents();
-    students.splice(index, 1);
-    saveStudentsToStorage(students);
-
-    if (editIndex === index) {
-        resetForm();
-    } else if (editIndex > index) {
-        editIndex--;
-    }
-
-    displayStudents();
-    updateStatistics();
-}
-
-/* CLEAR FORM */
-function resetForm() {
-    document.getElementById("studentForm").reset();
-    editIndex = -1;
-    document.getElementById("submitBtn").textContent = "ADD STUDENT";
-}
-
-/* DASHBOARD STATISTICS */
-function updateStatistics() {
-    const students = getStudents();
-    document.getElementById("totalStudents").textContent = students.length;
-
-    const courses = new Set(
-        students.map(student => student.course.toLowerCase())
-    );
-    document.getElementById("totalCourses").textContent = courses.size;
-
-    const average = students.length
-        ? students.reduce((sum, student) => sum + Number(student.age), 0) / students.length
-        : 0;
-    document.getElementById("averageAge").textContent = average.toFixed(1);
-}
-
-/* CHECK SESSION ON PAGE LOAD */
-window.onload = function() {
-    if (sessionStorage.getItem("rocLoggedIn")) {
-        openDashboard();
-    }
-};
-</script>
+<script src="app.js"></script>
 </body>
 </html>
