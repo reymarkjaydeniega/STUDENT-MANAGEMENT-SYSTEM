@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Form | ROC Student Management System</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+body { min-height: 100vh; background: #080d1c; color: white; display: flex; flex-direction: column; }
+header {
+    padding: 18px 5%;
+    background: #101a31;
+    border-bottom: 1px solid #263957;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+header h1 { color: #38bdf8; letter-spacing: 4px; }
+header p { color: #94a3b8; font-size: 11px; margin-top: 4px; letter-spacing: 2px; }
+nav { display: flex; gap: 10px; flex-wrap: wrap; }
+nav a {
+    color: #94a3b8;
+    text-decoration: none;
+    padding: 9px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: .3s;
+}
+nav a:hover, nav a.active { background: #172554; color: #38bdf8; }
+.header-right { display: flex; align-items: center; gap: 15px; }
+#welcomeUser { color: #38bdf8; font-size: 14px; font-weight: bold; }
+button, .btn {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 13px;
+    transition: .3s;
+}
+button:hover, .btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+.primary-btn { background: #0ea5e9; color: white; }
+.danger-btn { background: #dc2626; color: white; }
+main { width: 90%; max-width: 750px; margin: 35px auto; flex: 1; }
+.card { background: #111a30; border: 1px solid #263957; border-radius: 15px; padding: 30px; }
+h2 { color: #38bdf8; margin-bottom: 20px; }
+label { display: block; color: #94a3b8; font-size: 13px; margin-top: 12px; margin-bottom: 5px; }
+input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #080d1c;
+    color: white;
+    outline: none;
+}
+input:focus { border-color: #38bdf8; }
+.form-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+footer {
+    text-align: center;
+    padding: 22px;
+    background: #0b1224;
+    border-top: 1px solid #263957;
+    color: #94a3b8;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+footer strong { color: #38bdf8; }
+</style>
+</head>
+<body>
+<header>
+    <div>
+        <h1>ROC</h1>
+        <p>STUDENT MANAGEMENT SYSTEM</p>
+    </div>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="students.html">Student Records</a>
+        <a href="add-student.html" class="active">Add Student</a>
+        <a href="courses.html">Courses</a>
+    </nav>
+    <div class="header-right">
+        <span id="welcomeUser">Welcome!</span>
+        <button class="danger-btn" onclick="logout()">LOGOUT</button>
+    </div>
+</header>
+
+<main>
+    <section class="card">
+        <h2 id="formTitle">Register New Student</h2>
+        <form id="studentForm" onsubmit="saveStudent(event)">
+            <label for="studentName">Full Name</label>
+            <input type="text" id="studentName" placeholder="e.g. Juan Dela Cruz" required>
+
+            <label for="studentId">Student ID</label>
+            <input type="text" id="studentId" placeholder="e.g. 2026-00123" required>
+
+            <label for="studentAge">Age</label>
+            <input type="number" id="studentAge" placeholder="e.g. 19" min="1" max="120" required>
+
+            <label for="studentCourse">Course / Program</label>
+            <input type="text" id="studentCourse" placeholder="e.g. BSIT" required>
+
+            <div class="form-actions">
+                <button type="submit" class="primary-btn" id="submitBtn">SAVE STUDENT</button>
+                <a href="students.html" class="btn" style="background:#475569; color:white;">CANCEL</a>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 ROC | STUDENT MANAGEMENT SYSTEM</p>
+    <p>CREATED BY <strong>ROC</strong></p>
+</footer>
+
+<script>
+let editIndex = -1;
+
+function getStudents() {
+    return JSON.parse(localStorage.getItem("rocStudents")) || [];
+}
+function saveStudentsToStorage(students) {
+    localStorage.setItem("rocStudents", JSON.stringify(students));
+}
+function logout() {
+    if (confirm("Are you sure you want to logout?")) {
+        sessionStorage.removeItem("rocLoggedIn");
+        sessionStorage.removeItem("rocUserName");
+        window.location.href = "index.html";
+    }
+}
+
+function saveStudent(event) {
+    event.preventDefault();
+    const students = getStudents();
+    const student = {
+        name: document.getElementById("studentName").value.trim(),
+        id: document.getElementById("studentId").value.trim(),
+        age: document.getElementById("studentAge").value,
+        course: document.getElementById("studentCourse").value.trim()
+    };
+
+    const duplicate = students.some(
+        (item, index) => item.id.toLowerCase() === student.id.toLowerCase() && index !== editIndex
+    );
+    if (duplicate) return alert("Student ID already exists!");
+
+    if (editIndex === -1) {
+        students.push(student);
+        alert("Student added successfully!");
+    } else {
+        students[editIndex] = student;
+        alert("Student updated successfully!");
+    }
+
+    saveStudentsToStorage(students);
+    window.location.href = "students.html";
+}
+
+window.onload = function() {
+    const username = sessionStorage.getItem("rocLoggedIn");
+    if (!username) {
+        window.location.href = "index.html";
+        return;
+    }
+    document.getElementById("welcomeUser").textContent = "Welcome, " + sessionStorage.getItem("rocUserName");
+
+    const params = new URLSearchParams(window.location.search);
+    const editParam = params.get("edit");
+
+    if (editParam !== null) {
+        const index = Number(editParam);
+        const student = getStudents()[index];
+        if (student) {
+            editIndex = index;
+            document.getElementById("formTitle").textContent = "Edit Student Information";
+            document.getElementById("submitBtn").textContent = "UPDATE STUDENT";
+            document.getElementById("studentName").value = student.name;
+            document.getElementById("studentId").value = student.id;
+            document.getElementById("studentAge").value = student.age;
+            document.getElementById("studentCourse").value = student.course;
+        }
+    }
+};
+</script>
+</body>
+</html>
